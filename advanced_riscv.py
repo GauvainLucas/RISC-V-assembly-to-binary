@@ -428,10 +428,6 @@ def print_lines_between_keywords(filename, start_keyword, end_keyword):
                     continue  
                 print(line.strip())
 
-# Example usage
-filename = 'test.v'
-start_keyword = 'asm'
-end_keyword = 'endasm'
 print_lines_between_keywords('test.v', '__asm', '__endasm')
 
 
