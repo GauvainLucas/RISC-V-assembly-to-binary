@@ -199,12 +199,12 @@ def i_type_to_bin(instr):
     decod_instr = decode_instruction(instr)
     parts = decod_instr.split()
     opcode = opcode_map[parts[0]]
-    match = re.match(r'(\w+)\s+x(\d+),\s*(-?\d+)\(x(\d+)\)', decod_instr)
+    match = re.match(r'(\w+)\s+x(\d+),\s*x(\d+),\s*(-?\d+)', decod_instr)
     if not match:
         raise ValueError(f"Instruction format not recognized: {decod_instr}")
-    rd = format(int(parts[1][1:]), '05b')
-    rs1 = format(int(parts[2][1:]), '05b')
-    imm = format(int(parts[3]), '012b')
+    rd = format(int(match.group(2)), '05b')
+    rs1 = format(int(match.group(3)), '05b')
+    imm = format(int(match.group(4)), '012b') 
     funct3 = funct3_map[parts[0]]
     return imm + " " + rs1 + " " + funct3 + " " + rd + " " + opcode
 
@@ -217,7 +217,6 @@ def i_type_load_to_bin(instr):
     match = re.match(r'(\w+)\s+x(\d+),\s*(-?\d+)\(x(\d+)\)', decod_instr)
     if not match:
         raise ValueError(f"Instruction format not recognized: {decod_instr}")
-
     rd = format(int(match.group(2)), '05b')
     offset = int(match.group(3))
     rs1 = format(int(match.group(4)), '05b')
@@ -232,9 +231,12 @@ def i_type_shift_to_bin(instr):
     decod_instr = decode_instruction(instr)
     parts = decod_instr.split()
     opcode = opcode_map[parts[0]]
-    rd = format(int(parts[1][1:]), '05b')
-    rs1 = format(int(parts[2][1:]), '05b')
-    shamt = format(int(parts[3]), '05b')  
+    match = re.match(r'(\w+)\s+x(\d+),\s*x(\d+),\s*(-?\d+)', decod_instr)
+    if not match:
+        raise ValueError(f"Instruction format not recognized: {decod_instr}")
+    rd = format(int(match.group(2)), '05b')
+    rs1 = format(int(match.group(3)), '05b')
+    shamt = format(int(match.group(4)), '05b') 
     funct3 = funct3_map[parts[0]]
     funct7 = funct7_map[parts[0]]
     
@@ -263,9 +265,12 @@ def b_type_to_bin(instr):
     decod_instr = decode_instruction(instr)
     parts = decod_instr.split()
     opcode = opcode_map[parts[0]]
-    rs1 = format(int(parts[1][1:]), '05b')
-    rs2 = format(int(parts[2][1:]), '05b')
-    imm = format(int(parts[3]), '013b')
+    match = re.match(r'(\w+)\s+x(\d+),\s*x(\d+),\s*(-?\d+)', decod_instr)
+    if not match:
+        raise ValueError(f"Instruction format not recognized: {decod_instr}")
+    rs1 = format(int(match.group(2)), '05b')
+    rs2 = format(int(match.group(3)), '05b')
+    imm = format(int(match.group(4)), '013b') 
     imm_12 = imm[0]
     imm_10_5 = imm[2:8]
     imm_4_1 = imm[8:12]
@@ -279,9 +284,11 @@ def u_type_to_bin(instr):
     decod_instr = decode_instruction(instr)
     parts = decod_instr.split()
     opcode = opcode_map[parts[0]]
-    rd = format(int(parts[1][1:]), '05b')
-    imm = format(int(parts[2]), '020b')
-
+    match = re.match(r'(\w+)\s+x(\d+),\s*(-?\d+)', decod_instr)
+    if not match:
+        raise ValueError(f"Instruction format not recognized: {decod_instr}")
+    rd = format(int(match.group(2)), '05b')
+    imm = format(int(match.group(3)), '020b')
     return imm + " " + rd + " " + opcode
 
 # Function to convert J-type instructions to binary
@@ -289,8 +296,11 @@ def j_type_to_bin(instr):
     decod_instr = decode_instruction(instr)
     parts = decod_instr.split()
     opcode = opcode_map[parts[0]]
-    rd = format(int(parts[1][1:]), '05b')
-    imm = format(int(parts[2]), '021b')
+    match = re.match(r'(\w+)\s+x(\d+),\s*(-?\d+)', decod_instr)
+    if not match:
+        raise ValueError(f"Instruction format not recognized: {decod_instr}")
+    rd = format(int(match.group(2)), '05b')
+    imm = format(int(match.group(3)), '021b')
     imm_20 = imm[0]
     imm_10_1 = imm[10:20]
     imm_11 = imm[9]
@@ -316,31 +326,31 @@ instructions_r = [
 ]
 
 instructions_u = [ 
-    'lui x1 1000',      # U-type
-    'auipc x2 500',     # U-type
+    'lui x1, 1000',      # U-type
+    'auipc x2, 500',     # U-type
 ]
 
 instructions_j = [ 
-    'jal x1 2000',      # J-type
-    'jal x1 1234',      # J-type
+    'jal x1, 2000',      # J-type
+    'jal x1, 1234',      # J-type
 ]
 
 instructions_b = [ 
-    'beq x1 x2 20',     # B-type
-    'bne x2 x3 30',     # B-type
-    'blt x1 x3 40',     # B-type
-    'bge x2 x1 50',     # B-type
-    'bltu x1 x2 60',    # B-type
-    'bgeu x3 x1 70',    # B-type
+    'beq x1, x2, 20',     # B-type
+    'bne x2, x3, 30',     # B-type
+    'blt x1, x3, 40',     # B-type
+    'bge x2, x1, 50',     # B-type
+    'bltu x1, x2, 60',    # B-type
+    'bgeu x3, x1, 70',    # B-type
 ]
 
 instructions_i = [ 
-    'addi x1 x2 10',    # I-type
-    'slti x2 x3 20',    # I-type
-    'sltiu x3 x1 30',   # I-type
-    'xori x1 x2 40',    # I-type
-    'ori x2 x3 50',     # I-type
-    'andi x3 x1 60',    # I-type
+    'addi x1, x2, 10',    # I-type
+    'slti x2, x3, 20',    # I-type
+    'sltiu x3, x1, 30',   # I-type
+    'xori x1, x2, 40',    # I-type
+    'ori x2, x3, 50',     # I-type
+    'andi x3, x1, 60',    # I-type
 ]
 
 instructions_i_type_load= [ 
@@ -353,9 +363,9 @@ instructions_i_type_load= [
 ]
 
 instructions_i_type_shift = [ 
-    'slli x1 x2 1',     # I-type-shift
-    'srli x2 x3 2',     # I-type-shift
-    'srai x3 x1 3',     # I-type-shift
+    'slli x1, x2, 1',     # I-type-shift
+    'srli x2, x3, 2',     # I-type-shift
+    'srai x3, x1, 3',     # I-type-shift
 ]
 
 instructions_s = [ 
@@ -366,12 +376,12 @@ instructions_s = [
 ]
 
 instructions_mix = [
-    'slli ra sp 1',     # I-type (shift)
-    'srli s1 t1 2',     # I-type (shift)
-    'srai a1 zero 3',   # I-type (shift)
+    'slli ra, sp, 1',     # I-type (shift)
+    'srli s1, t1, 2',     # I-type (shift)
+    'srai a1, zero, 3',   # I-type (shift)
     'lw s0, 100(a0)',   # I-type (load)
     'sw t0, 200(gp)',   # S-type (store)
-    'add fp, t1, t2',     # R-type
+    'add fp, t1, t2',   # R-type
     'ecall',            # Full instruction
 ]
 
@@ -400,5 +410,5 @@ def get_bin(instr):
         raise ValueError(f"Unknown instruction type: {instr}")
 
 
-for instr in instructions_mix:
+for instr in instructions_j:
     print(f"{instr} -> {get_bin(instr)}")
