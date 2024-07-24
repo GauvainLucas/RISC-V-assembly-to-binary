@@ -45,6 +45,3 @@ instructions = [
     'ADD fp t1 t2'      # R-type
 ]
 
-for instr in instructions:
-    print(f"{instr} -> {decode_instruction(instr)}")
-

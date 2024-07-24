@@ -326,13 +326,13 @@ instructions_r = [
 ]
 
 instructions_u = [ 
-    'lui x1, 1000',      # U-type
-    'auipc x2, 500',     # U-type
+    'lui x1, 1000',       # U-type
+    'auipc x2, 500',      # U-type
 ]
 
 instructions_j = [ 
-    'jal x1, 2000',      # J-type
-    'jal x1, 1234',      # J-type
+    'jal x1, 2000',       # J-type
+    'jal x1, 1234',       # J-type
 ]
 
 instructions_b = [ 
@@ -354,12 +354,12 @@ instructions_i = [
 ]
 
 instructions_i_type_load= [ 
-    'jalr x3, 300(x1)', # I-type (jalr)
-    'lb x1, 100(x2)',   # I-type-load
-    'lh x2, 200(x3)',   # I-type-load
-    'lw x3, 300(x1)',   # I-type-load
-    'lbu x1, 400(x2)',  # I-type-load
-    'lhu x2, 500(x3)',  # I-type-load
+    'jalr x3, 300(x1)',   # I-type (jalr)
+    'lb x1, 100(x2)',     # I-type-load
+    'lh x2, 200(x3)',     # I-type-load
+    'lw x3, 300(x1)',     # I-type-load
+    'lbu x1, 400(x2)',    # I-type-load
+    'lhu x2, 500(x3)',    # I-type-load
 ]
 
 instructions_i_type_shift = [ 
@@ -369,20 +369,20 @@ instructions_i_type_shift = [
 ]
 
 instructions_s = [ 
-    'sb x3, 600(x1)',   # S-type
-    'sh x1, 700(x2)',   # S-type
-    'sw x2, 800(x3)',   # S-type
-    'sb a3, 600(t0)',   # S-type
+    'sb x3, 600(x1)',     # S-type
+    'sh x1, 700(x2)',     # S-type
+    'sw x2, 800(x3)',     # S-type
+    'sb a3, 600(t0)',     # S-type
 ]
 
 instructions_mix = [
     'slli ra, sp, 1',     # I-type (shift)
     'srli s1, t1, 2',     # I-type (shift)
     'srai a1, zero, 3',   # I-type (shift)
-    'lw s0, 100(a0)',   # I-type (load)
-    'sw t0, 200(gp)',   # S-type (store)
-    'add fp, t1, t2',   # R-type
-    'ecall',            # Full instruction
+    'lw s0, 100(a0)',     # I-type (load)
+    'sw t0, 200(gp)',     # S-type (store)
+    'add fp, t1, t2',     # R-type
+    'ecall',              # Full instruction
 ]
 
 def get_bin(instr):
@@ -412,3 +412,8 @@ def get_bin(instr):
 
 for instr in instructions_j:
     print(f"{instr} -> {get_bin(instr)}")
+
+
+f = open("test.v", "r")
+print(f.readline())
+f.close()
