@@ -351,6 +351,7 @@ instructions_i = [
     'xori x1, x2, 40',    # I-type
     'ori x2, x3, 50',     # I-type
     'andi x3, x1, 60',    # I-type
+    'addi x1, x2, 19',
 ]
 
 instructions_i_type_load= [ 
@@ -409,11 +410,28 @@ def get_bin(instr):
     else:
         raise ValueError(f"Unknown instruction type: {instr}")
 
+# Test the instructions
+#for instr in instructions_i:
+#    print(f"{instr} -> {get_bin(instr)}")
 
-for instr in instructions_j:
-    print(f"{instr} -> {get_bin(instr)}")
+
+def print_lines_between_keywords(filename, start_keyword, end_keyword):
+    in_block = False
+    with open(filename, 'r') as file:
+        for line in file:
+            if start_keyword in line:
+                in_block = True
+                continue  
+            if in_block:
+                if end_keyword in line:
+                    in_block = False
+                    continue  
+                print(line.strip())
+
+# Example usage
+filename = 'test.v'
+start_keyword = 'asm'
+end_keyword = 'endasm'
+print_lines_between_keywords('test.v', '__asm', '__endasm')
 
 
-f = open("test.v", "r")
-print(f.readline())
-f.close()
