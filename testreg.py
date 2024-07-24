@@ -44,4 +44,3 @@ instructions = [
     'SW t0 200(gp)',    # S-type (store)
     'ADD fp t1 t2'      # R-type
 ]
-
