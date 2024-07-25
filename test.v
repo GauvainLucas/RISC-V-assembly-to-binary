@@ -276,19 +276,13 @@ module test_CPU_top(
 `ifdef EXT_INLINE_ASM
     rom = '{
       __asm
-      
-.arch femto8
-.org 128
-.len 128
-      
     slli ra, sp, 1     
     srli s1, t1, 2    
     srai a1, zero, 3 
     lw s0, 100(a0)    
     sw t0, 200(gp)   
     add fp, t1, t2    
-    ecall,  
-
+    ecall  
       __endasm
     };
 `endif

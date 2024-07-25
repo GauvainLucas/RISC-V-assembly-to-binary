@@ -415,7 +415,7 @@ def get_bin(instr):
 #    print(f"{instr} -> {get_bin(instr)}")
 
 
-def print_lines_between_keywords(filename, start_keyword, end_keyword):
+def analyse_lines_between_keywords(filename, start_keyword, end_keyword):
     in_block = False
     with open(filename, 'r') as file:
         for line in file:
@@ -426,8 +426,12 @@ def print_lines_between_keywords(filename, start_keyword, end_keyword):
                 if end_keyword in line:
                     in_block = False
                     continue  
-                print(line.strip())
+                #print(line.strip())
+                instr = line.strip()
+                print(f"{instr} -> {get_bin(instr)}")
+              
 
-print_lines_between_keywords('test.v', '__asm', '__endasm')
+analyse_lines_between_keywords('test.v', '__asm', '__endasm')
+
 
 
